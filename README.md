@@ -46,7 +46,7 @@ apps — rather than a second repo:
 1. In the `UTZLINE-Site-Measure` repo (the one `redline-projects-pwa/`
    is uploaded to, at its root), add everything from *this* folder
    under a `viewer/` subfolder — so it ends up live at
-   `https://github.com/utzy79/UTZLINE-Redline-Viewer`. Keep the
+   `https://utzy79.github.io/UTZLINE-Redline-Viewer`. Keep the
    `icons/` folder structure intact, same as the main app.
 2. Open that URL once in a normal browser tab while online (to let the
    service worker cache it for offline use).
