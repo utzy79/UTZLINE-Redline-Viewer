@@ -217,7 +217,13 @@
 // (this fix) and run_viewer_recolor.js (the expanded recolour scope),
 // each sanity-checked via a temporary revert-and-restore cycle. Bumping
 // the cache name to match the editor's release.)
-var CACHE_NAME = "utzline-viewer-cache-v36";
+//
+// (v37, 2026-09-19: the editor's in-page camera-capture fix for the
+// Android tab-discard/crash report -- see the editor's own service-worker.js
+// for the full write-up. Insert image is already hidden throughout this
+// Viewer build, so this is a no-op here in practice; bumping the cache name
+// purely because it shares the same source.html as the editor.)
+var CACHE_NAME = "utzline-viewer-cache-v37";
 var ICON_VERSION = CACHE_NAME.replace("utzline-viewer-cache-", "");
 
 var PRECACHE_URLS = [
