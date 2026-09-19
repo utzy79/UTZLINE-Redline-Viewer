@@ -223,7 +223,15 @@
 // for the full write-up. Insert image is already hidden throughout this
 // Viewer build, so this is a no-op here in practice; bumping the cache name
 // purely because it shares the same source.html as the editor.)
-var CACHE_NAME = "utzline-viewer-cache-v37";
+//
+// (v38, 2026-09-19: the editor's verifiedHandleWrite() retry fix for the
+// "couldn't auto-save (empty_write)" reliability bug -- this Viewer build
+// never writes anything at all, so it's a no-op here in practice. The
+// header/project-gate wordmark DOES apply here though: "LINE" now colors
+// with this build's own blue accent, matching UTZLINE ITP's header and
+// this app's own icon-*.png artwork. See the editor's own
+// service-worker.js for the full write-up of both.)
+var CACHE_NAME = "utzline-viewer-cache-v38";
 var ICON_VERSION = CACHE_NAME.replace("utzline-viewer-cache-", "");
 
 var PRECACHE_URLS = [
