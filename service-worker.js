@@ -231,7 +231,13 @@
 // with this build's own blue accent, matching UTZLINE ITP's header and
 // this app's own icon-*.png artwork. See the editor's own
 // service-worker.js for the full write-up of both.)
-var CACHE_NAME = "utzline-viewer-cache-v38";
+//
+// (v39, 2026-09-21: the editor's new shared "device identity" feature --
+// the toolbar button and its IndexedDB store are hidden/no-ops in this
+// read-only Viewer build (see the editor's own service-worker.js for the
+// full write-up), so this bump is purely because it shares the same
+// source.html as the editor.)
+var CACHE_NAME = "utzline-viewer-cache-v39";
 var ICON_VERSION = CACHE_NAME.replace("utzline-viewer-cache-", "");
 
 var PRECACHE_URLS = [

@@ -1,6 +1,6 @@
 # UTZLINE Viewer — installable app
 
-**Current version: v38** (kept in lockstep with the editor's own version, since both are built from the same `source.html` — bump this line every time a new build ships.)
+**Current version: v39** (kept in lockstep with the editor's own version, since both are built from the same `source.html` — bump this line every time a new build ships.)
 
 This folder is the self-contained, installable **read-only viewer**
 companion to **UTZLINE Site Measure**. It shares the exact same
