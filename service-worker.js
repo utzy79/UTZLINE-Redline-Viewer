@@ -237,7 +237,13 @@
 // read-only Viewer build (see the editor's own service-worker.js for the
 // full write-up), so this bump is purely because it shares the same
 // source.html as the editor.)
-var CACHE_NAME = "utzline-viewer-cache-v39";
+//
+// (v40, 2026-09-22: the level list now also excludes a project-wide folder
+// literally named "itp-manufacture" -- the new UTZLINE Manufacture ITP
+// app's own data folder, a sibling of the existing "itp" folder -- so it
+// shares the editor's same fix for the same reason, again purely because
+// both builds come from the same source.html.)
+var CACHE_NAME = "utzline-viewer-cache-v40";
 var ICON_VERSION = CACHE_NAME.replace("utzline-viewer-cache-", "");
 
 var PRECACHE_URLS = [
