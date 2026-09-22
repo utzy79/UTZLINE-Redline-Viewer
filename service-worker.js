@@ -272,7 +272,14 @@
 // (someone pointing "Choose Projects Folder" straight at a job folder)
 // now correctly recognises a flat project as a project instead of
 // misreading it as an empty/unknown root.)
-var CACHE_NAME = "utzline-viewer-cache-v43";
+//
+// (v44, 2026-09-22: shares the editor's own Joinery Item dialog fix -- see
+// the editor's own service-worker.js for the full write-up. The Viewer's
+// half: right-click/long-press/double-click a roomlink marker now opens the
+// same "Joinery item" dialog (read-only here -- the Add button is hidden
+// since the Viewer never writes), instead of navigating straight into "the
+// Room" the way it used to for a legacy project.)
+var CACHE_NAME = "utzline-viewer-cache-v44";
 var ICON_VERSION = CACHE_NAME.replace("utzline-viewer-cache-", "");
 
 var PRECACHE_URLS = [
