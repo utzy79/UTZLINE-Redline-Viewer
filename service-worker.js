@@ -335,7 +335,10 @@
 // offered as a toggleable reference layer through the same new "Site
 // Measure layers" panel/toolbar button the editor gets. Bumped in
 // lockstep with the editor since both builds share this one source.html.)
-var CACHE_NAME = "utzline-viewer-cache-v45.0";
+// v45.1 (2026-09-22): picks up the same "itp-install" level-list exclusion
+// as the editor (Install ITP's own folder rename) -- bumped in lockstep
+// since both builds share this one source.html. No other functional change.
+var CACHE_NAME = "utzline-viewer-cache-v45.1";
 var ICON_VERSION = CACHE_NAME.replace("utzline-viewer-cache-", "");
 
 var PRECACHE_URLS = [
