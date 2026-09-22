@@ -287,7 +287,13 @@
 // matters here for the picker never having been reachable at all in a build
 // where VIEW_ONLY_MODE somehow didn't apply; bumped in lockstep with the
 // editor regardless, since both builds share this one source.html.)
-var CACHE_NAME = "utzline-viewer-cache-v44.1";
+//
+// (v44.2, 2026-09-22, same-day rebuild: shares the editor's own rebuild of
+// "Add photo / image" -- see the editor's own service-worker.js for the full
+// write-up. The Viewer's Add button stays hidden either way (VIEW_ONLY_MODE),
+// so nothing changes for a Viewer user here; bumped in lockstep with the
+// editor since both builds share this one source.html.)
+var CACHE_NAME = "utzline-viewer-cache-v44.2";
 var ICON_VERSION = CACHE_NAME.replace("utzline-viewer-cache-", "");
 
 var PRECACHE_URLS = [
