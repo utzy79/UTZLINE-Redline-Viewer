@@ -304,7 +304,17 @@
 // other page in the Viewer), rather than the button being unavailable
 // entirely. Bumped in lockstep with the editor since both builds share
 // this one source.html.)
-var CACHE_NAME = "utzline-viewer-cache-v44.3";
+//
+// (v44.4, 2026-09-22, same day: shares the editor's own two bug fixes --
+// see the editor's own service-worker.js for the full write-up (duplicate
+// joinery-code page collisions; a pasted-in photo drifting off its own
+// border on a joinery item's PDF export). Neither fix changes anything
+// Viewer-specific on its own -- the Viewer never writes a page, so it
+// never triggers the PDF-boost mismatch itself, but it DOES now correctly
+// show two same-coded items as two separate pages when navigating one
+// that Site Measure has already fixed up. Bumped in lockstep with the
+// editor since both builds share this one source.html.)
+var CACHE_NAME = "utzline-viewer-cache-v44.4";
 var ICON_VERSION = CACHE_NAME.replace("utzline-viewer-cache-", "");
 
 var PRECACHE_URLS = [
