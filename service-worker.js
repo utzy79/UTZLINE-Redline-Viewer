@@ -243,7 +243,15 @@
 // app's own data folder, a sibling of the existing "itp" folder -- so it
 // shares the editor's same fix for the same reason, again purely because
 // both builds come from the same source.html.)
-var CACHE_NAME = "utzline-viewer-cache-v40";
+//
+// (v41, 2026-09-22: the editor's cutover -- New Project/Level/Room, Project
+// Info, and "Add joinery item here" all removed from source.html entirely
+// (moved to UTZLINE Projects). This build already had none of those
+// visible (body.viewer-mode CSS hid them, and createNewProject/Level/Room
+// always rejected with {code:"view_only"} underneath), so this bump is
+// purely because the Viewer shares the same source.html as the editor --
+// see the editor's own service-worker.js for the full write-up.)
+var CACHE_NAME = "utzline-viewer-cache-v41";
 var ICON_VERSION = CACHE_NAME.replace("utzline-viewer-cache-", "");
 
 var PRECACHE_URLS = [

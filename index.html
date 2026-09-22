@@ -3,10 +3,10 @@
 <meta charset="utf-8">
 <title>UTZLINE Site Measure</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="manifest" href="./manifest.json?v=v40">
+<link rel="manifest" href="./manifest.json?v=v41">
 <meta name="theme-color" content="#16283a">
-<link rel="icon" type="image/png" sizes="512x512" href="./icons/icon-512.png?v=v40">
-<link rel="apple-touch-icon" href="./icons/icon-192.png?v=v40">
+<link rel="icon" type="image/png" sizes="512x512" href="./icons/icon-512.png?v=v41">
+<link rel="apple-touch-icon" href="./icons/icon-192.png?v=v41">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -547,8 +547,6 @@
   }
   .modal-actions{ display:flex; justify-content:flex-end; gap:8px; flex-wrap:wrap; }
   /* ---------- project info dialog (Project No. / Name / Head Contractor) ---------- */
-  #projectInfoBackdrop .modal-box{ max-width:360px; }
-  #joineryItemBackdrop .modal-box{ max-width:360px; }
   .project-info-field-label{
     display:block; font-size:12px; font-weight:600; color:var(--text-secondary);
     margin:0 0 4px;
@@ -841,18 +839,15 @@
   body.viewer-mode #toolButtons [data-tool="rect"],
   body.viewer-mode #toolButtons [data-tool="text"],
   body.viewer-mode #toolButtons [data-tool="callout"],
-  /* The project/level/room "gate" pickers' own create actions -- every one
-     of these was reachable and looked perfectly ordinary in the Viewer
-     even though createNewProject/Level/Room have always rejected with
-     {code:"view_only"} underneath (reported directly by Andrew, 2026-09-17,
-     as "not sure how importing a project is meant to work" after finding
-     "+ New Project" and getting nothing but a generic failure toast back).
-     "Use a Different Projects Folder" is deliberately NOT in this list --
+  /* "Use a Different Projects Folder" is deliberately NOT in this list --
      choosing which folder to BROWSE is a read-only navigation action, not
-     a mutation, and stays available. */
-  body.viewer-mode #newProjectBtn, body.viewer-mode #newLevelBtn,
-  body.viewer-mode #newRoomBtn, body.viewer-mode #exportAllRoomPdfsBtn,
-  body.viewer-mode #exportAllProjectPdfsBtn, body.viewer-mode #editProjectInfoBtn{
+     a mutation, and stays available. New Project/Level/Room and Project
+     Info no longer exist in Site Measure at all as of the 2026-09-22
+     cutover (moved to UTZLINE Projects), so there's nothing left to hide
+     here for them specifically -- only the two PDF batch-export actions
+     remain real editor-only controls. */
+  body.viewer-mode #exportAllRoomPdfsBtn,
+  body.viewer-mode #exportAllProjectPdfsBtn{
     display: none !important;
   }
   /* Viewer-only accent recolor: the same in-app blue used for the Viewer's
@@ -1248,19 +1243,25 @@
           <p id="gateListFolderLabel"></p>
           <div class="project-list" id="projectListItems"></div>
           <div class="project-gate-actions">
-            <button class="mbtn mbtn-accent" id="newProjectBtn">+ New Project</button>
             <button class="mbtn" id="switchProjectsRootBtn">Use a Different Projects Folder</button>
           </div>
         </div>
 
+        <!-- Project creation (New Project/Level/Room), Project Info, and
+             joinery-item/marker placement all moved to UTZLINE Projects at
+             the 2026-09-22 cutover (Andrew, verbatim: "UTZLINE Projects is
+             now the only application permitted to: Create Project, Create
+             Level, Create Room, Project Metadata, Place Joinery Markers,
+             Create Joinery Items ... Site Measure becomes a
+             measurement-only application"). This screen is now read-only
+             navigation of whatever Projects has already created -- see
+             next-version-notes.md's "Shipped" entry for the cutover. -->
         <div id="gateLevels" hidden>
           <button type="button" class="project-gate-back" id="backToProjectsBtn">← All projects</button>
           <p id="gateLevelsLabel"></p>
           <div class="project-list" id="levelListItems"></div>
           <div class="project-gate-actions">
-            <button class="mbtn mbtn-accent" id="newLevelBtn">+ New Level</button>
             <button class="mbtn" id="exportAllProjectPdfsBtn" title="Re-renders and saves a fresh PDF for every level's own main plan AND every room under every level in this project, straight into each one's own pdfs folder — without opening each one by hand first.">Export all PDFs (whole project)</button>
-            <button class="mbtn" id="editProjectInfoBtn" title="Project No., Project Name, and Head Contractor / Builder — used to auto-fill the title block on ITP checklists for this project.">Project Info</button>
           </div>
         </div>
 
@@ -1277,7 +1278,6 @@
           </div>
           <div class="project-list" id="roomListItems"></div>
           <div class="project-gate-actions">
-            <button class="mbtn mbtn-accent" id="newRoomBtn">+ New Room</button>
             <button class="mbtn" id="exportAllRoomPdfsBtn" title="Re-renders and saves a fresh PDF for every room in this level, straight into each room's own pdfs folder — without having to open each room and hit Save by hand.">Export all room PDFs</button>
           </div>
         </div>
@@ -1358,43 +1358,10 @@
       </div>
     </div>
 
-    <!-- Placing a room-link marker on a level's plan now creates one
-         JOINERY ITEM (a room can hold several dots, one per item), not one
-         marker per room -- requested by Andrew, 2026-09-18: "the popup
-         needs to ask for room in one box then joinery code in another...
-         if a room name is already created, it can call up a drop down
-         selector list based on that level with a create new button also."
-         See promptAddRoomAt/showJoineryItemDialog. -->
-    <div class="modal-backdrop" id="joineryItemBackdrop" hidden>
-      <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="joineryItemLabel">
-        <p id="joineryItemLabel">Add a joinery item here — links this spot on the plan to a room and a joinery item:</p>
-        <label class="project-info-field-label" for="joineryItemRoomSelect">Room</label>
-        <select class="rename-input" id="joineryItemRoomSelect"></select>
-        <input type="text" class="rename-input" id="joineryItemNewRoomInput" maxlength="120" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="New room name" hidden>
-        <label class="project-info-field-label" for="joineryItemCodeInput">Joinery code</label>
-        <input type="text" class="rename-input" id="joineryItemCodeInput" maxlength="60" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="e.g. J101">
-        <div class="modal-actions">
-          <button class="mbtn" id="joineryItemCancel">Cancel</button>
-          <button class="mbtn mbtn-accent" id="joineryItemOk">Add</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal-backdrop" id="projectInfoBackdrop" hidden>
-      <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="projectInfoLabel">
-        <p id="projectInfoLabel">Project info — used to auto-fill ITP checklist title blocks for this project:</p>
-        <label class="project-info-field-label" for="projectInfoNoInput">Project No.</label>
-        <input type="text" class="rename-input" id="projectInfoNoInput" maxlength="60" autocomplete="off" autocapitalize="off" spellcheck="false">
-        <label class="project-info-field-label" for="projectInfoNameInput">Project name</label>
-        <input type="text" class="rename-input" id="projectInfoNameInput" maxlength="120" autocomplete="off" autocapitalize="off" spellcheck="false">
-        <label class="project-info-field-label" for="projectInfoContractorInput">Head Contractor / Builder</label>
-        <input type="text" class="rename-input" id="projectInfoContractorInput" maxlength="120" autocomplete="off" autocapitalize="off" spellcheck="false">
-        <div class="modal-actions">
-          <button class="mbtn" id="projectInfoSkip">Skip for now</button>
-          <button class="mbtn mbtn-accent" id="projectInfoSave">Save</button>
-        </div>
-      </div>
-    </div>
+    <!-- Joinery-item/marker-placement dialog and the Project Info dialog
+         both moved to UTZLINE Projects at the 2026-09-22 cutover -- removed
+         from here along with promptAddRoomAt/showJoineryItemDialog/
+         showProjectInfoDialog. -->
 
     <div class="modal-backdrop" id="shareChoiceBackdrop" hidden>
       <div class="modal-box share-choice-box" role="dialog" aria-modal="true" aria-labelledby="shareChoiceLabel">
@@ -1476,7 +1443,7 @@
   // change, at the same time as service-worker.js's CACHE_NAME and the
   // delivered zip's filename, so all three always agree on the same number
   // instead of drifting out of sync with each other.
-  var APP_VERSION = "v40";
+  var APP_VERSION = "v41";
   // Read-only "viewer" mode -- a distinct standalone build (own manifest,
   // own icon/name -- see the viewer PWA's start_url) for the drafting
   // office to browse projects/levels/rooms without any ability to edit,
@@ -2770,8 +2737,9 @@
     });
   }
   function listExistingProjects(){ return listSubdirNames(projectsRootHandle); }
-  // "itp" and "itp-manufacture" are reserved project-wide folders (see
-  // writeProjectMeta's own comment on project-meta.json) written by the two
+  // "itp" and "itp-manufacture" are reserved project-wide folders (a
+  // sibling of "project-meta.json" -- now owned by UTZLINE Projects, see
+  // next-version-notes.md's 2026-09-22 cutover entry) written by the two
   // separate ITP apps -- UTZLINE ITP (now specifically the install-stage
   // app) and its sibling UTZLINE Manufacture ITP (the factory/pre-delivery
   // stage app, forked from it) -- directly under a project's own folder,
@@ -2789,25 +2757,28 @@
     applyLoadedImage(blank.dataURL, blank.w, blank.h, name);
   }
 
-  // Resolves (creating if missing) the named project's own folder and lands
-  // on its level picker -- this does NOT load a canvas by itself; a project
-  // is just a folder of levels, so opening one always means "choose which
-  // level to work on" (openLevel), never "here's a plan". The same
-  // create-if-missing call covers both "open an existing project" and "this
-  // project's folder vanished since the list was built" without a separate
-  // existence check racing the real open.
+  // Resolves the named project's own folder (by name, from the known
+  // projects root) and lands on its level picker -- this is what clicking
+  // an existing project row in the list actually calls (via
+  // renderPickerList/populateProjectList). Still passes {create:true} in
+  // the editor build the same defensive way openLevel/openRoom do (a race
+  // where the folder vanished between listing and opening shouldn't error),
+  // not because Site Measure can still originate a brand-new project by
+  // name -- "New Project" itself moved to UTZLINE Projects at the
+  // 2026-09-22 cutover, and there's no UI left that ever passes a name
+  // this function hasn't already seen in the list.
   function openProjectLevels(name){
     return projectsRootHandle.getDirectoryHandle(name, { create: !VIEW_ONLY_MODE }).then(function(dirH){
       return openProjectFromHandle(dirH, name);
     });
   }
-  // The part of openProjectLevels() that doesn't need to look the handle up
-  // by name from a known projects root -- factored out so the viewer's
-  // shape-detection folder-opening can open a project folder handed to it
-  // directly (no known root at all -- see detectFolderShape/pickProjects-
-  // RootFolder). "← All projects" (backToProjectsBtn) is hidden whenever
-  // there's no known projectsRootHandle to list, the same reasoning
-  // openLevelFromHandle applies to "Switch project / level".
+  // Opens a project folder handle directly by reference -- used when
+  // clicking an existing project row, restoring the last-open project on
+  // boot, and the viewer's shape-detection folder-opening (a folder handed
+  // to it directly, no known root at all -- see detectFolderShape/
+  // pickProjectsRootFolder). "← All projects" (backToProjectsBtn) is hidden
+  // whenever there's no known projectsRootHandle to list, the same
+  // reasoning openLevelFromHandle applies to "Switch project / level".
   function openProjectFromHandle(dirH, name){
     activeProjectName = name;
     activeProjectHandle = dirH;
@@ -2815,32 +2786,6 @@
       gateLevelsLabel.textContent = "“" + activeProjectName + "” — choose a level, or start a new one.";
       if (backToProjectsBtn) backToProjectsBtn.style.display = projectsRootHandle ? "" : "none";
       showGateState("levels");
-    });
-  }
-
-  // "New Project" is a request to start something fresh -- a name that
-  // collides with an existing project folder (case-insensitively; the
-  // underlying filesystem may or may not itself be case-sensitive, so this
-  // can't rely on that) gets a numbered suffix instead of silently
-  // reopening whatever's already there under that name. Landing on the new
-  // project's (empty) level list, rather than immediately naming a first
-  // level too, keeps this the same shape as the root project list's own
-  // empty state.
-  function createNewProject(rawName){
-    // Defensive -- there's no "New project" UI in viewer mode and the
-    // shape-detection folder-opening it uses to open a picked folder never
-    // calls this, but guarding the function itself means a future caller
-    // can't accidentally create something a read-only build should never
-    // be able to.
-    if (VIEW_ONLY_MODE) return Promise.reject({ code: "view_only" });
-    var name = sanitizeFileBase(rawName);
-    return listExistingProjects().then(function(existing){
-      var existingLower = existing.map(function(n){ return n.toLowerCase(); });
-      var finalName = name, n = 2;
-      while (existingLower.indexOf(finalName.toLowerCase()) !== -1){
-        finalName = name + " " + n; n++;
-      }
-      return openProjectLevels(finalName);
     });
   }
 
@@ -2928,21 +2873,6 @@
     });
   }
 
-  // "New Level" mirrors "New Project" one folder deeper -- a name that
-  // collides with an existing level of THIS project gets a numbered suffix.
-  function createNewLevel(rawName){
-    if (VIEW_ONLY_MODE) return Promise.reject({ code: "view_only" }); // see createNewProject's own comment
-    var name = sanitizeFileBase(rawName);
-    return listExistingLevels().then(function(existing){
-      var existingLower = existing.map(function(n){ return n.toLowerCase(); });
-      var finalName = name, n = 2;
-      while (existingLower.indexOf(finalName.toLowerCase()) !== -1){
-        finalName = name + " " + n; n++;
-      }
-      return openLevel(finalName);
-    });
-  }
-
   // Rooms live one folder deeper than levels, directly under the current
   // level's own folder, alongside its "saves" and "pdfs" subfolders --
   // exclude those two by name so they never show up mislabeled as rooms.
@@ -3012,21 +2942,6 @@
     });
   }
 
-  // "New Room" mirrors "New Level" one folder deeper -- a name that
-  // collides with an existing room of THIS level gets a numbered suffix.
-  function createNewRoom(rawName){
-    if (VIEW_ONLY_MODE) return Promise.reject({ code: "view_only" }); // see createNewProject's own comment
-    var name = sanitizeFileBase(rawName);
-    return listExistingRooms().then(function(existing){
-      var existingLower = existing.map(function(n){ return n.toLowerCase(); });
-      var finalName = name, n = 2;
-      while (existingLower.indexOf(finalName.toLowerCase()) !== -1){
-        finalName = name + " " + n; n++;
-      }
-      return openRoom(finalName);
-    });
-  }
-
   // Double-clicking (or the right-click/long-press popover's "Open room"
   // row) on a roomlink marker on the level's own plan. Only meaningful from
   // that plan itself (activeLevelName set, activeRoomName not -- guarded
@@ -3071,71 +2986,12 @@
     });
   }
 
-  // The long-press ("Add a room here") flow, from the right-click/long-press
-  // popover on the level's own plan (see the contextmenu handler and
-  // showLockPopover). wx/wy are the world coordinates of the press -- where
-  // the new marker lands.
-  //
-  // Deliberately does NOT reuse createNewRoom() -- that function's own
-  // openRoom() call REPLACES state.objects in memory with the new room's
-  // blank canvas, which would silently discard the marker just pushed onto
-  // the LEVEL's plan (and any other unsaved change there) before it's ever
-  // written to disk. So this replicates createNewRoom's own name-dedup
-  // logic directly, places the marker, explicitly saves the level's plan
-  // first, and only THEN calls openRoom() to actually navigate in.
-  // Andrew, 2026-09-18: a room can now hold several of these markers, one
-  // per joinery ITEM, so this asks for Room (a dropdown of rooms that
-  // already exist on this level, plus "+ Create new room…") and a Joinery
-  // code, rather than just a room name. Picking an EXISTING room just
-  // drops another pin and stays put -- no need to reopen that room's
-  // canvas every time another item is added to it; picking "create new
-  // room" still jumps straight into that brand-new room's own canvas
-  // afterward, same as before, since a genuinely new room still needs an
-  // actual photo taken/imported.
-  function promptAddRoomAt(wx, wy){
-    if (VIEW_ONLY_MODE) return; // defensive -- the popover row that calls this is hidden in viewer mode
-    if (!activeLevelName || activeRoomName) return;
-    listExistingRooms().then(function(existing){
-      return showJoineryItemDialog(existing).then(function(value){
-        if (value === null) return; // cancelled
-        var existingLower = existing.map(function(n){ return n.toLowerCase(); });
-        var codeRaw = (value.code || "").trim();
-        var finalRoomName;
-        if (value.isNewRoom){
-          var roomRaw = (value.roomName || "").trim();
-          if (!roomRaw){ showToast("Enter a name for the new room."); return; }
-          var clean = sanitizeFileBase(roomRaw);
-          finalRoomName = clean;
-          var n = 2;
-          while (existingLower.indexOf(finalRoomName.toLowerCase()) !== -1){
-            finalRoomName = clean + " " + n; n++;
-          }
-        } else {
-          finalRoomName = value.roomName;
-        }
-        // Two dots for the same room can't share a label -- dedup the code
-        // against sibling markers already in this room on this level, same
-        // numbered-suffix convention used for room/level naming.
-        var siblingCodesLower = state.objects.filter(function(o){
-          return o.type === "roomlink" && o.roomName && o.roomName.toLowerCase() === finalRoomName.toLowerCase();
-        }).map(function(o){ return (o.joineryCode || "").toLowerCase(); });
-        var finalCode = codeRaw, cn = 2;
-        while (finalCode && siblingCodesLower.indexOf(finalCode.toLowerCase()) !== -1){
-          finalCode = codeRaw + " " + cn; cn++;
-        }
-        var marker = makeRoomLink(wx, wy, finalRoomName, finalCode);
-        state.objects.push(marker);
-        pushHistory(); renderAll();
-        return saveActiveLevelFile().then(function(){
-          if (value.isNewRoom) return openRoom(finalRoomName);
-          showToast("Added “" + finalRoomName + (finalCode ? " · " + finalCode : "") + "”.");
-        });
-      });
-    }).catch(function(err){
-      console.error("Add joinery item failed:", err);
-      showToast("Couldn't add that — try again.");
-    });
-  }
+  // Placing a new joinery marker/item ("Add joinery item here", the
+  // long-press/right-click flow that used to live here as promptAddRoomAt)
+  // moved to UTZLINE Projects at the 2026-09-22 cutover. Existing markers
+  // already on a plan still render and still navigate to their room via
+  // openRoomFromMarker below -- only the ability to CREATE a new one from
+  // Site Measure is gone.
 
   // Writes the current plan's editable state straight into this level's own
   // saves/ folder as one continuously-overwritten canonical file (named
@@ -4156,34 +4012,12 @@
       label: { text: "", x: ax + defaultFontSize() * 3, y: ay - defaultFontSize() * 2, rot: 0, fontSize: defaultFontSize(), family: "sans", color: c }
     };
   }
-  // A clickable marker on a LEVEL's own main floor plan that links to one
-  // of that level's rooms -- double-click (or the right-click/long-press
-  // popover's own "Open room" row) jumps straight to that room's own
-  // separate annotated photo/drawing, same idea as a pin on a map. Deliberately
-  // simple compared to callout/text: fixed-size dot, no independent label
-  // drag/rotate/resize -- the room name IS the label, and renaming a room
-  // isn't supported anywhere else in the app either (projects/levels/rooms
-  // are create/delete only), so there's nothing to keep in sync by letting
-  // this text be edited separately. r/label.fontSize scale off the plan's
-  // own size (autoFontSize), same as every other new object's default size,
-  // so a marker looks reasonably sized whether the plan is a small sketch or
-  // a large photo.
-  // joineryCode identifies which joinery ITEM within roomName this marker
-  // is for -- a room can hold several of these markers, one per item
-  // (door, window, joinery run, ...), each landing wherever that piece
-  // actually sits on the plan. Older markers saved before this existed
-  // have no joineryCode ("" ), and just show the room name alone, same as
-  // before -- see promptAddRoomAt.
-  function makeRoomLink(x, y, roomName, joineryCode, color){
-    var c = color || defaultColorFor("roomlink");
-    var fontSize = defaultFontSize();
-    var r = fontSize * 0.85;
-    var labelText = joineryCode ? (roomName + " · " + joineryCode) : roomName;
-    return {
-      id: uid(), type: "roomlink", x: x, y: y, r: r, roomName: roomName, joineryCode: joineryCode || "", color: c,
-      label: { text: labelText, x: x, y: y + r + fontSize * 0.95, rot: 0, fontSize: fontSize, family: "sans", color: c, anchor: "middle" }
-    };
-  }
+  // makeRoomLink() -- the constructor for a NEW roomlink marker -- moved to
+  // UTZLINE Projects at the 2026-09-22 cutover along with the rest of
+  // joinery-marker creation. Rendering/interaction code for EXISTING
+  // roomlink objects (which just reads obj.type === "roomlink" off
+  // whatever's already in state.objects) is untouched and stays right
+  // where it is throughout this file.
 
   /* ============================== end caps ============================== */
   // sizeA/sizeB are the two arms' independent lengths — arm A and arm B are
@@ -4847,17 +4681,15 @@
       state.selectedId = BASE_IMAGE_SELECT_ID;
       renderAll();
     }
-    // Real report: link a room to a spot on the level's own floor plan via
-    // a long-press -- offered on this SAME right-click/long-press gesture
-    // (over the base photo, right alongside Mirror, or on genuinely empty
-    // canvas for a level with no photo yet) rather than a competing gesture,
-    // since a long-press almost always lands ON the base photo in practice.
-    // Only on a LEVEL's own main plan (never inside one of its rooms --
-    // rooms can't contain sub-rooms -- and never in the plain single-file
-    // fallback mode, which has no rooms concept at all).
-    var canAddRoom = !!activeLevelName && !activeRoomName;
-    if (overBaseImage || canAddRoom){
-      showLockPopover({ __isBaseImage: overBaseImage, __isEmptyCanvas: !overBaseImage, __atPoint: wp }, e.clientX, e.clientY);
+    // Right-clicking/long-pressing genuinely empty canvas used to also open
+    // this popover (its only row there was "Add joinery item here", now
+    // moved to UTZLINE Projects -- see promptAddRoomAt's own removal note
+    // above) -- opening it now with nothing left to show would just be a
+    // dead, empty floating box, the same bug class showLockPopover's own
+    // viewer-mode comment already describes. So this only opens the popover
+    // for a right-click that actually landed on the base photo (Mirror).
+    if (overBaseImage){
+      showLockPopover({ __isBaseImage: true, __isEmptyCanvas: false, __atPoint: wp }, e.clientX, e.clientY);
       return;
     }
     hideLockPopover();
@@ -5830,7 +5662,6 @@
   // Bring to front's own composition.
   var SEND_BACK_ICON = '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="9" height="9" rx="1"/><path d="M14.5 7.5H16A1 1 0 0 1 17 8.5V16A1 1 0 0 1 16 17H8.5A1 1 0 0 1 7.5 16V14.5"/></svg>';
   var ROOM_ICON = '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17V4.5a1 1 0 0 1 1-1h4l4 2v11.5"/><path d="M5 17h9"/><circle cx="11.3" cy="10.5" r="0.7" fill="currentColor" stroke="none"/></svg>';
-  var ADD_ROOM_ICON = '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 17V4.5a1 1 0 0 1 1-1h3.5l3.5 2v11.5"/><path d="M4.5 17h8"/><path d="M14 10v3.6M12.2 11.8h3.6" stroke-width="1.8"/></svg>';
   // Same curved-arrow language (and literal paths) as the toolbar's own
   // Undo/Redo icons -- CCW curves left like Undo, CW curves right like
   // Redo, so "which way does this arrow turn" already reads consistently
@@ -5961,25 +5792,11 @@
       });
     }
 
-    // Real report: can a room link to a spot on the plan? A long-press
-    // right here (over the base photo, alongside Mirror, or on genuinely
-    // empty canvas) offers exactly that -- but only from a level's own main
-    // plan, never inside a room, never in single-file mode (which has no
-    // rooms concept at all). The contextmenu handler already skips opening
-    // this popover at all for the isEmptyCanvas case when that's not true
-    // (its own canAddRoom check), but it still opens it for Mirror whenever
-    // isBaseImage is true regardless -- so this row needs its own repeat of
-    // the same activeLevelName/activeRoomName check, or single-file mode
-    // (or a room's own canvas) would show a dead "Add a room here" row next
-    // to Mirror that silently does nothing when tapped (promptAddRoomAt
-    // itself no-ops in that case, but showing the row at all would be
-    // confusing).
-    if (!VIEW_ONLY_MODE && (isBaseImage || isEmptyCanvas) && activeLevelName && !activeRoomName){
-      popoverRow(wrap, ADD_ROOM_ICON + "<span>Add joinery item here</span>", function(){
-        hideLockPopover();
-        promptAddRoomAt(obj.__atPoint.x, obj.__atPoint.y);
-      });
-    }
+    // "Add joinery item here" (promptAddRoomAt) moved to UTZLINE Projects at
+    // the 2026-09-22 cutover -- this row is gone. See the contextmenu
+    // handler above: it no longer opens this popover for genuinely empty
+    // canvas at all now that there's nothing left for that case to show
+    // (only overBaseImage still opens it, for Mirror).
 
     // Real report: inserted photos/PDF pages should default to sitting
     // BELOW every measurement/text/callout/etc. (see placeInsertedImage),
@@ -6574,7 +6391,6 @@
   var gateList = document.getElementById("gateList");
   var gateListFolderLabel = document.getElementById("gateListFolderLabel");
   var projectListItems = document.getElementById("projectListItems");
-  var newProjectBtn = document.getElementById("newProjectBtn");
   var switchProjectsRootBtn = document.getElementById("switchProjectsRootBtn");
   // "My projects" (Viewer only) -- see the HTML comment above #gateMyProjects
   // for the full "why". These elements simply don't exist in a build whose
@@ -6586,7 +6402,6 @@
   var gateLevels = document.getElementById("gateLevels");
   var gateLevelsLabel = document.getElementById("gateLevelsLabel");
   var levelListItems = document.getElementById("levelListItems");
-  var newLevelBtn = document.getElementById("newLevelBtn");
   var backToProjectsBtn = document.getElementById("backToProjectsBtn");
   // Same shape one folder deeper still -- lists the rooms inside whichever
   // level is currently open (activeLevelHandle). Reached via the toolbar's
@@ -6595,7 +6410,6 @@
   var gateRooms = document.getElementById("gateRooms");
   var gateRoomsLabel = document.getElementById("gateRoomsLabel");
   var roomListItems = document.getElementById("roomListItems");
-  var newRoomBtn = document.getElementById("newRoomBtn");
   var openLevelPlanBtn = document.getElementById("openLevelPlanBtn");
   var backToLevelsFromRoomsBtn = document.getElementById("backToLevelsFromRoomsBtn");
   var roomsBtn = document.getElementById("roomsBtn");
@@ -6961,8 +6775,9 @@
     // long-press/right-click in the Viewer ran the exact same real,
     // recursive removeEntry() the editor uses -- reported directly by
     // Andrew (2026-09-17) after testing the v21 build. Every other mutating
-    // path already guards itself the same way (see createNewProject's own
-    // comment); this one just never had the guard added when the Viewer
+    // path already guards itself the same way (see openProjectLevels'/
+    // openLevel's/openRoom's own VIEW_ONLY_MODE handling); this one just
+    // never had the guard added when the Viewer
     // was built. Fixed by intercepting here, before ANY of the real
     // delete logic below even runs, and replacing it with a purely local,
     // non-destructive "hide from my list" (see hideEntryForViewerInstead).
@@ -7400,43 +7215,14 @@
       console.error("Reconnect Projects folder failed:", err);
     });
   });
-  newProjectBtn.addEventListener("click", function(){
-    showRenameDialog("", "Name your new project:").then(function(value){
-      if (value === null) return; // cancelled
-      var clean = sanitizeFileBase(value);
-      return createNewProject(clean).then(function(){
-        // The project folder now exists and activeProjectHandle/activeProjectName
-        // point at it (openProjectFromHandle, called at the end of
-        // createNewProject, sets both) -- prompt for its info right away,
-        // prefilled with the just-chosen name, entirely optional ("Skip for
-        // now" writes nothing, same as never having opened this dialog).
-        return showProjectInfoDialog({ no: "", name: activeProjectName, contractor: "" }, "Skip for now");
-      }).then(function(meta){
-        if (!meta) return; // skipped -- can be filled in later via "Project Info"
-        return writeProjectMeta(activeProjectHandle, meta);
-      });
-    }).catch(function(err){
-      console.error("Create project failed:", err);
-      showToast("Couldn't create that project — try again.");
-    });
-  });
+  // "New Project" moved to UTZLINE Projects at the 2026-09-22 cutover.
   switchProjectsRootBtn.addEventListener("click", function(){
     pickProjectsRootFolder().catch(function(err){
       if (err && err.name === "AbortError") return;
       console.error("Choose Projects folder failed:", err);
     });
   });
-  newLevelBtn.addEventListener("click", function(){
-    showRenameDialog("", "Name your new level:").then(function(value){
-      if (value === null) return; // cancelled
-      var clean = sanitizeFileBase(value);
-      createNewLevel(clean).catch(function(err){
-        if (err && err.code === "nav_cancelled") return; // declined the confirm -- just stay put
-        console.error("Create level failed:", err);
-        showToast("Couldn't create that level — try again.");
-      });
-    });
-  });
+  // "New Level" moved to UTZLINE Projects at the 2026-09-22 cutover.
   // "Export all PDFs (whole project)" -- the project-wide counterpart to
   // "Export all room PDFs" above: every level's own main plan, and every
   // room under every level, all in one pass (see exportAllPdfsForProject's
@@ -7471,17 +7257,7 @@
       showGateState("list");
     });
   });
-  newRoomBtn.addEventListener("click", function(){
-    showRenameDialog("", "Name your new room:").then(function(value){
-      if (value === null) return; // cancelled
-      var clean = sanitizeFileBase(value);
-      createNewRoom(clean).catch(function(err){
-        if (err && err.code === "nav_cancelled") return; // declined the confirm -- just stay put
-        console.error("Create room failed:", err);
-        showToast("Couldn't create that room — try again.");
-      });
-    });
-  });
+  // "New Room" moved to UTZLINE Projects at the 2026-09-22 cutover.
   // "Export all room PDFs" -- refreshes every room's own PDF in this level
   // in one pass (see exportAllRoomPdfsForLevel's own comment above for why:
   // Save already does this per-room, but only for whichever one is
@@ -7835,163 +7611,12 @@
     else if (e.key === "Escape"){ e.preventDefault(); closeUserIdentity(null); }
   });
 
-  /* ---- Project info (Project No. / Project Name / Head Contractor) ----
-     A small per-project metadata file, "project-meta.json", written into
-     the PROJECT's own folder (a sibling of its level folders, not inside
-     any of them) -- deliberately just a plain JSON file rather than a
-     directory, so it's invisible to every existing shape-detection/
-     listSubdirNames call, which only ever look at subdirectories. Read by
-     the (separate) UTZLINE ITP app to auto-fill a checklist's title block;
-     this app itself never displays these fields anywhere else. Editing is
-     Site-Measure-only (never in the read-only Viewer, same convention as
-     every other write) -- the ITP app only ever reads this file. */
-  function projectMetaFilename(){ return "project-meta.json"; }
-  function readProjectMeta(dirHandle){
-    if (!dirHandle) return Promise.resolve(null);
-    return dirHandle.getFileHandle(projectMetaFilename()).then(function(fh){
-      return fh.getFile();
-    }).then(function(file){
-      return file.text();
-    }).then(function(text){
-      try{
-        var parsed = JSON.parse(text);
-        return {
-          no: String(parsed.no || ""),
-          name: String(parsed.name || ""),
-          contractor: String(parsed.contractor || "")
-        };
-      }catch(e){ return null; }
-    }, function(){ return null; }); // no file yet -- not an error
-  }
-  function writeProjectMeta(dirHandle, meta){
-    if (VIEW_ONLY_MODE || !dirHandle) return Promise.reject({ code: "view_only" });
-    var payload = JSON.stringify({
-      no: String((meta && meta.no) || ""),
-      name: String((meta && meta.name) || ""),
-      contractor: String((meta && meta.contractor) || "")
-    });
-    return dirHandle.getFileHandle(projectMetaFilename(), { create: true }).then(function(fh){
-      return fh.createWritable();
-    }).then(function(w){
-      return w.write(payload).then(function(){ return w.close(); });
-    });
-  }
-  var projectInfoBackdrop = document.getElementById("projectInfoBackdrop");
-  var projectInfoNoInput = document.getElementById("projectInfoNoInput");
-  var projectInfoNameInput = document.getElementById("projectInfoNameInput");
-  var projectInfoContractorInput = document.getElementById("projectInfoContractorInput");
-  var projectInfoSave = document.getElementById("projectInfoSave");
-  var projectInfoSkip = document.getElementById("projectInfoSkip");
-  var projectInfoResolve = null;
-  // skipLabel lets the same dialog read as "Skip for now" right after
-  // creating a brand-new project (nothing's been entered yet, entirely
-  // optional) vs. "Cancel" when reopened later to edit already-saved info.
-  function showProjectInfoDialog(current, skipLabel){
-    projectInfoNoInput.value = (current && current.no) || "";
-    projectInfoNameInput.value = (current && current.name) || "";
-    projectInfoContractorInput.value = (current && current.contractor) || "";
-    projectInfoSkip.textContent = skipLabel || "Cancel";
-    projectInfoBackdrop.hidden = false;
-    projectInfoNoInput.focus();
-    return new Promise(function(resolve){ projectInfoResolve = resolve; });
-  }
-  function closeProjectInfo(value){
-    projectInfoBackdrop.hidden = true;
-    var resolve = projectInfoResolve; projectInfoResolve = null;
-    if (resolve) resolve(value);
-  }
-  function currentProjectInfoValue(){
-    return {
-      no: projectInfoNoInput.value,
-      name: projectInfoNameInput.value,
-      contractor: projectInfoContractorInput.value
-    };
-  }
-  projectInfoSave.addEventListener("click", function(){ closeProjectInfo(currentProjectInfoValue()); });
-  projectInfoSkip.addEventListener("click", function(){ closeProjectInfo(null); });
-  projectInfoBackdrop.addEventListener("click", function(e){ if (e.target === projectInfoBackdrop) closeProjectInfo(null); });
-  [projectInfoNoInput, projectInfoNameInput, projectInfoContractorInput].forEach(function(inp){
-    inp.addEventListener("keydown", function(e){
-      if (e.key === "Enter"){ e.preventDefault(); closeProjectInfo(currentProjectInfoValue()); }
-      else if (e.key === "Escape"){ e.preventDefault(); closeProjectInfo(null); }
-    });
-  });
-
-  /* ---------- "Add joinery item" dialog (Room + Joinery code) ---------- */
-  var joineryItemBackdrop = document.getElementById("joineryItemBackdrop");
-  var joineryItemRoomSelect = document.getElementById("joineryItemRoomSelect");
-  var joineryItemNewRoomInput = document.getElementById("joineryItemNewRoomInput");
-  var joineryItemCodeInput = document.getElementById("joineryItemCodeInput");
-  var joineryItemOk = document.getElementById("joineryItemOk");
-  var joineryItemCancel = document.getElementById("joineryItemCancel");
-  var joineryItemResolve = null;
-  var JOINERY_NEW_ROOM_VALUE = "__new__";
-  function updateJoineryNewRoomVisibility(){
-    var isNew = joineryItemRoomSelect.value === JOINERY_NEW_ROOM_VALUE;
-    joineryItemNewRoomInput.hidden = !isNew;
-    if (isNew) joineryItemNewRoomInput.focus();
-  }
-  // existingRoomNames: every room already on this level, so the picker
-  // offers them directly instead of forcing a retype -- "+ Create new
-  // room…" is always appended as the last option.
-  function showJoineryItemDialog(existingRoomNames){
-    joineryItemRoomSelect.innerHTML = "";
-    (existingRoomNames || []).forEach(function(name){
-      var opt = document.createElement("option");
-      opt.value = name; opt.textContent = name;
-      joineryItemRoomSelect.appendChild(opt);
-    });
-    var newOpt = document.createElement("option");
-    newOpt.value = JOINERY_NEW_ROOM_VALUE; newOpt.textContent = "+ Create new room…";
-    joineryItemRoomSelect.appendChild(newOpt);
-    joineryItemRoomSelect.value = (existingRoomNames && existingRoomNames.length) ? existingRoomNames[0] : JOINERY_NEW_ROOM_VALUE;
-    joineryItemNewRoomInput.value = "";
-    joineryItemCodeInput.value = "";
-    updateJoineryNewRoomVisibility();
-    joineryItemBackdrop.hidden = false;
-    if (joineryItemRoomSelect.value !== JOINERY_NEW_ROOM_VALUE) joineryItemCodeInput.focus();
-    return new Promise(function(resolve){ joineryItemResolve = resolve; });
-  }
-  function closeJoineryItem(value){
-    joineryItemBackdrop.hidden = true;
-    var resolve = joineryItemResolve; joineryItemResolve = null;
-    if (resolve) resolve(value);
-  }
-  function currentJoineryItemValue(){
-    var isNew = joineryItemRoomSelect.value === JOINERY_NEW_ROOM_VALUE;
-    return { roomName: isNew ? joineryItemNewRoomInput.value : joineryItemRoomSelect.value, code: joineryItemCodeInput.value, isNewRoom: isNew };
-  }
-  joineryItemRoomSelect.addEventListener("change", updateJoineryNewRoomVisibility);
-  joineryItemOk.addEventListener("click", function(){ closeJoineryItem(currentJoineryItemValue()); });
-  joineryItemCancel.addEventListener("click", function(){ closeJoineryItem(null); });
-  joineryItemBackdrop.addEventListener("click", function(e){ if (e.target === joineryItemBackdrop) closeJoineryItem(null); });
-  [joineryItemNewRoomInput, joineryItemCodeInput].forEach(function(inp){
-    inp.addEventListener("keydown", function(e){
-      if (e.key === "Enter"){ e.preventDefault(); closeJoineryItem(currentJoineryItemValue()); }
-      else if (e.key === "Escape"){ e.preventDefault(); closeJoineryItem(null); }
-    });
-  });
-
-  // "Project Info" button on the levels-list screen -- lets info be added
-  // to a project that skipped it when created, or fixed later; hidden in
-  // the Viewer (CSS) alongside every other create/edit action there.
-  var editProjectInfoBtn = document.getElementById("editProjectInfoBtn");
-  if (editProjectInfoBtn){
-    editProjectInfoBtn.addEventListener("click", function(){
-      if (VIEW_ONLY_MODE || !activeProjectHandle) return;
-      readProjectMeta(activeProjectHandle).then(function(existing){
-        return showProjectInfoDialog(existing || { no: "", name: activeProjectName, contractor: "" }, "Cancel");
-      }).then(function(meta){
-        if (!meta) return; // cancelled -- leave whatever was saved before untouched
-        return writeProjectMeta(activeProjectHandle, meta).then(function(){
-          showToast("Project info saved.");
-        });
-      }).catch(function(err){
-        console.error("Save project info failed:", err);
-        showToast("Couldn't save project info — try again.");
-      });
-    });
-  }
+  // Project Info (Project No./Name/Head Contractor, "project-meta.json"),
+  // and the "Add joinery item" (Room + Joinery code) dialog, both moved to
+  // UTZLINE Projects at the 2026-09-22 cutover -- Site Measure no longer
+  // reads or writes project-meta.json at all (it never displayed those
+  // fields anywhere besides this dialog; the separate UTZLINE ITP/
+  // Manufacture ITP apps read the file directly and are unaffected).
 
   /* ============================== open / drop image ============================== */
   // "New" used to always wipe THIS plan's content back to blank in place --
