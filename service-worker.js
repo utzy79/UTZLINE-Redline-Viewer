@@ -314,7 +314,28 @@
 // show two same-coded items as two separate pages when navigating one
 // that Site Measure has already fixed up. Bumped in lockstep with the
 // editor since both builds share this one source.html.)
-var CACHE_NAME = "utzline-viewer-cache-v44.4";
+//
+// (v44.5, 2026-09-22, same day: shares the editor's own duplicate-marker-
+// id healing fix -- see the editor's own service-worker.js for the full
+// write-up. The Viewer never writes, so it can't itself CREATE a
+// duplicate-id marker or heal one back to disk, but the in-memory healing
+// in applyRestoredState() still runs on every plan it opens, so it also
+// correctly shows two id-colliding markers as two distinct, independently
+// selectable/deletable... well, not deletable in the Viewer, but at least
+// correctly NOT visually "linked" -- objects, the same as the editor.
+// Bumped in lockstep with the editor since both builds share this one
+// source.html.)
+//
+// (v45.0, 2026-09-22, same day: shares the editor's own multi-layer Site
+// Measure overlay rewrite -- see the editor's own service-worker.js for
+// the full write-up. The Viewer never writes, so it never has a draft or
+// creates a permanent layer of its own; when opening a joinery item it now
+// shows the single most recent overlay across everyone as its base view
+// (the interim "most-recent-layer-wins" rule), with every OTHER overlay
+// offered as a toggleable reference layer through the same new "Site
+// Measure layers" panel/toolbar button the editor gets. Bumped in
+// lockstep with the editor since both builds share this one source.html.)
+var CACHE_NAME = "utzline-viewer-cache-v45.0";
 var ICON_VERSION = CACHE_NAME.replace("utzline-viewer-cache-", "");
 
 var PRECACHE_URLS = [
