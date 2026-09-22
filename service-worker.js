@@ -279,7 +279,15 @@
 // same "Joinery item" dialog (read-only here -- the Add button is hidden
 // since the Viewer never writes), instead of navigating straight into "the
 // Room" the way it used to for a legacy project.)
-var CACHE_NAME = "utzline-viewer-cache-v44";
+//
+// (v44.1, 2026-09-22, same-day hotfix: shares the editor's own stacking fix
+// for the Add-photo picker rendering behind the Joinery Item dialog instead
+// of on top of it -- see the editor's own service-worker.js for the full
+// write-up. The Viewer's Add button is already hidden, so this fix mainly
+// matters here for the picker never having been reachable at all in a build
+// where VIEW_ONLY_MODE somehow didn't apply; bumped in lockstep with the
+// editor regardless, since both builds share this one source.html.)
+var CACHE_NAME = "utzline-viewer-cache-v44.1";
 var ICON_VERSION = CACHE_NAME.replace("utzline-viewer-cache-", "");
 
 var PRECACHE_URLS = [

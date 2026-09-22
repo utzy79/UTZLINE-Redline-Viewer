@@ -46,7 +46,7 @@ SRC = Path("/home/claude/redline-projects/source.html")
 OUT = Path(__file__).parent / "index.html"
 MANIFEST = Path(__file__).parent / "manifest.json"
 
-APP_VERSION_RE = re.compile(r'var APP_VERSION = "(v\d+)"')
+APP_VERSION_RE = re.compile(r'var APP_VERSION = "(v\d+(?:\.\d+)?)"')  # accepts "v44" or a same-day hotfix suffix like "v44.1"
 
 VIEW_ONLY_MODE_RE = re.compile(
     r'var VIEW_ONLY_MODE = /\[\?&\]viewer=1\(&\|\$\)/\.test\(location\.search\);'
