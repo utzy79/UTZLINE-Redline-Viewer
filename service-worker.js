@@ -260,7 +260,19 @@
 // Implementation Brief -- see
 // utzline-overlay-architecture-brief-investigation.md for the plan and
 // remaining phases. No other functional change in this release.)
-var CACHE_NAME = "utzline-viewer-cache-v42";
+//
+// (v43, 2026-09-22: flat-structure interop -- this build shares the same
+// fix as the editor purely because it comes from the same source.html;
+// see the editor's own service-worker.js for the full write-up. The
+// Viewer only ever reads, so its half of this is simply: it can now open
+// a UTZLINE Projects v9+ project (Project Saves/Floor Plans/ per Level,
+// no Level/Room folders) read-only, the same way it's always opened a
+// legacy nested-folder project -- isFlatProject()'s detection is shared
+// code, and the Viewer's own detectFolderShape-based direct-pick flow
+// (someone pointing "Choose Projects Folder" straight at a job folder)
+// now correctly recognises a flat project as a project instead of
+// misreading it as an empty/unknown root.)
+var CACHE_NAME = "utzline-viewer-cache-v43";
 var ICON_VERSION = CACHE_NAME.replace("utzline-viewer-cache-", "");
 
 var PRECACHE_URLS = [
