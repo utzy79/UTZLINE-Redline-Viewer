@@ -293,7 +293,18 @@
 // write-up. The Viewer's Add button stays hidden either way (VIEW_ONLY_MODE),
 // so nothing changes for a Viewer user here; bumped in lockstep with the
 // editor since both builds share this one source.html.)
-var CACHE_NAME = "utzline-viewer-cache-v44.2";
+//
+// (v44.3, 2026-09-22, same-day rebuild again: shares the editor's own
+// "each joinery item gets its own page" rebuild -- see the editor's own
+// service-worker.js for the full write-up. UNLIKE v44.1/v44.2, this one
+// DOES change something for a Viewer user: the dialog's button (renamed
+// "Open joinery item") is pure navigation now, not a write, so it's no
+// longer hidden here -- a Viewer user can open a joinery item's own page
+// to look at whatever's been saved there (read-only, same as opening any
+// other page in the Viewer), rather than the button being unavailable
+// entirely. Bumped in lockstep with the editor since both builds share
+// this one source.html.)
+var CACHE_NAME = "utzline-viewer-cache-v44.3";
 var ICON_VERSION = CACHE_NAME.replace("utzline-viewer-cache-", "");
 
 var PRECACHE_URLS = [
