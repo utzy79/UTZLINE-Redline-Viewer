@@ -251,7 +251,16 @@
 // always rejected with {code:"view_only"} underneath), so this bump is
 // purely because the Viewer shares the same source.html as the editor --
 // see the editor's own service-worker.js for the full write-up.)
-var CACHE_NAME = "utzline-viewer-cache-v41";
+//
+// (v42, 2026-09-22: Pan/Zoom colour-picker bug fix in the shared
+// renderPanel() logic -- this build shares the same fix purely because it
+// comes from the same source.html as the editor; see the editor's own
+// service-worker.js for the full root-cause write-up. This is release 1 of
+// Andrew's confirmed sequenced rollout of the UTZLINE Unified
+// Implementation Brief -- see
+// utzline-overlay-architecture-brief-investigation.md for the plan and
+// remaining phases. No other functional change in this release.)
+var CACHE_NAME = "utzline-viewer-cache-v42";
 var ICON_VERSION = CACHE_NAME.replace("utzline-viewer-cache-", "");
 
 var PRECACHE_URLS = [
