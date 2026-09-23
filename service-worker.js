@@ -353,7 +353,16 @@
 // requested only at the moment the feature is actually used -- every other
 // action in this app remains exactly as read-only as before. Bumped in
 // lockstep with the editor since both builds share this one source.html.
-var CACHE_NAME = "utzline-viewer-cache-v45.4";
+//
+// v45.5 (2026-09-23, same day): shares the editor's own two changes -- see
+// the editor's own service-worker.js for the full write-up. (1) the shared
+// status pipeline gains "in_manufacture"/"delivered" stages plus a per-
+// record history log (this app doesn't write either, but renders/reads them
+// the same as the editor). (2) "View job note" (popover row and the item
+// page's own button) now only shows once a job note actually exists on that
+// item, instead of always showing. Bumped in lockstep with the editor since
+// both builds share this one source.html.
+var CACHE_NAME = "utzline-viewer-cache-v45.5";
 var ICON_VERSION = CACHE_NAME.replace("utzline-viewer-cache-", "");
 
 var PRECACHE_URLS = [
