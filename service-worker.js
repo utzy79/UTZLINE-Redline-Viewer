@@ -353,7 +353,7 @@
 // requested only at the moment the feature is actually used -- every other
 // action in this app remains exactly as read-only as before. Bumped in
 // lockstep with the editor since both builds share this one source.html.
-var CACHE_NAME = "utzline-viewer-cache-v45.2";
+var CACHE_NAME = "utzline-viewer-cache-v45.3";
 var ICON_VERSION = CACHE_NAME.replace("utzline-viewer-cache-", "");
 
 var PRECACHE_URLS = [
