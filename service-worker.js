@@ -362,7 +362,7 @@
 // page's own button) now only shows once a job note actually exists on that
 // item, instead of always showing. Bumped in lockstep with the editor since
 // both builds share this one source.html.
-var CACHE_NAME = "utzline-viewer-cache-v45.6";
+var CACHE_NAME = "utzline-viewer-cache-v45.7";
 var ICON_VERSION = CACHE_NAME.replace("utzline-viewer-cache-", "");
 
 var PRECACHE_URLS = [
