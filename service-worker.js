@@ -338,7 +338,22 @@
 // v45.1 (2026-09-22): picks up the same "itp-install" level-list exclusion
 // as the editor (Install ITP's own folder rename) -- bumped in lockstep
 // since both builds share this one source.html. No other functional change.
-var CACHE_NAME = "utzline-viewer-cache-v45.1";
+//
+// v45.2 (2026-09-23): shares the editor's own joinery-status/job-notes
+// feature -- see the editor's own service-worker.js for the full write-up.
+// A roomlink marker's on-plan label now shows only its joinery code, and
+// the shared status badge (📏/📦/🏆) renders here too. This app's read-only
+// guarantee (VIEW_ONLY_MODE) rules out a bare status-flip action, so --
+// per Andrew's own answer once that conflict was raised with him -- the
+// Viewer gets NO "Mark as check measured" row at all, only "Add job note"
+// (drag a PDF onto a popup / tap to choose one) and "View job note". Add
+// job note is this app's one deliberate exception to never writing: it
+// prompts for a one-time, narrowly-scoped (this project's own folder
+// handle only, never the whole Projects root) write-permission upgrade,
+// requested only at the moment the feature is actually used -- every other
+// action in this app remains exactly as read-only as before. Bumped in
+// lockstep with the editor since both builds share this one source.html.
+var CACHE_NAME = "utzline-viewer-cache-v45.2";
 var ICON_VERSION = CACHE_NAME.replace("utzline-viewer-cache-", "");
 
 var PRECACHE_URLS = [
