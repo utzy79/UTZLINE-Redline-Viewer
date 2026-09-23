@@ -362,7 +362,17 @@
 // page's own button) now only shows once a job note actually exists on that
 // item, instead of always showing. Bumped in lockstep with the editor since
 // both builds share this one source.html.
-var CACHE_NAME = "utzline-viewer-cache-v45.8";
+//
+// v45.9 (2026-09-23, same day): shares the editor's own change -- see the
+// editor's own service-worker.js for the full write-up. The shared status
+// pipeline gains a new "machined" stage (⚙️, rank 3) between
+// "in_manufacture" and "manufactured", written by a brand-new sibling app,
+// "Machine Schedule" -- every rank at or above the old "manufactured" shifts
+// up by one (manufactured -> 4, delivered -> 5, installed -> 6). This app
+// doesn't write any of these stages, but renders the badge the same as the
+// editor, so its rank/icon tables need to stay in sync too. Bumped in
+// lockstep with the editor since both builds share this one source.html.
+var CACHE_NAME = "utzline-viewer-cache-v45.9";
 var ICON_VERSION = CACHE_NAME.replace("utzline-viewer-cache-", "");
 
 var PRECACHE_URLS = [
