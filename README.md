@@ -1,6 +1,8 @@
 # UTZLINE Viewer — installable app
 
-**Current version: v45.7** (kept in lockstep with the editor's own version, since both are built from the same `source.html` — bump this line, and add a dated changelog entry, every time a new build ships; v40 through v45.6 shipped without this line being kept in sync — see `next-version-notes.md` in the project, or the editor's own README, for the full per-version detail of that stretch. The only change specific to v45.6 itself: the level-list exclusion gained the new `itp-delivery` folder.)
+**Current version: v45.8** (kept in lockstep with the editor's own version, since both are built from the same `source.html` — bump this line, and add a dated changelog entry, every time a new build ships; v40 through v45.6 shipped without this line being kept in sync — see `next-version-notes.md` in the project, or the editor's own README, for the full per-version detail of that stretch. The only change specific to v45.6 itself: the level-list exclusion gained the new `itp-delivery` folder.)
+
+**v45.8 (2026-09-23):** see the editor's own README for the full detail — same shared `source.html`, so this app gets the identical change. Andrew's job-note request ("when a joinery item gets a job note (not shop drawing) it should update the joinery status to in manufacture in the joinery register") applies here too, since the Viewer is where "Add job note" actually lives (Site Measure only ever kept "View job note" — see the v45.7 entry above). Job note filenames also moved their timestamp from the front to the end of the name, same as the editor.
 
 **v45.7 (2026-09-23):** three requests from Andrew, sent together with two
 screenshots (verbatim): (1) "site measure app needs the correct user
