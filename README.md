@@ -1,6 +1,10 @@
 # UTZLINE Viewer — installable app
 
-**Current version: v45.11** (kept in lockstep with the editor's own version, since both are built from the same `source.html` — bump this line, and add a dated changelog entry, every time a new build ships; v40 through v45.6 shipped without this line being kept in sync — see `next-version-notes.md` in the project, or the editor's own README, for the full per-version detail of that stretch. The only change specific to v45.6 itself: the level-list exclusion gained the new `itp-delivery` folder.)
+**Current version: v45.12** (kept in lockstep with the editor's own version, since both are built from the same `source.html` — bump this line, and add a dated changelog entry, every time a new build ships; v40 through v45.6 shipped without this line being kept in sync — see `next-version-notes.md` in the project, or the editor's own README, for the full per-version detail of that stretch. The only change specific to v45.6 itself: the level-list exclusion gained the new `itp-delivery` folder.)
+
+**v45.12 (2026-09-24):** see the editor's own README for the full detail — same shared `source.html`, so this app gets the identical fix. Andrew's follow-up report after v45.11 ("every site measure save needs to be added as an extra layer... alll username layers need to be accessible regardless of who is using the viewer") applies directly here: this app's base view (most recent overlay across everyone) now offers literally every other saved layer, from every user and every timestamp, as a toggle — not just each other user's single latest one.
+
+- Cache version bumped: `utzline-viewer-cache-v45.12`.
 
 **v45.11 (2026-09-24):** see the editor's own README for the full detail — same shared `source.html`, so this app gets the identical fix. The joinery-item storage-key instability behind Andrew's "layers... only gives you one name to exclude, needs to show all names" report affected this app too, since the Viewer reads and offers the same overlay-layer list — a colliding marker's key is now cached permanently on the marker once resolved, so this build and Site Measure always agree on it regardless of what either device happens to have synced locally.
 
