@@ -372,7 +372,7 @@
 // doesn't write any of these stages, but renders the badge the same as the
 // editor, so its rank/icon tables need to stay in sync too. Bumped in
 // lockstep with the editor since both builds share this one source.html.
-var CACHE_NAME = "utzline-viewer-cache-v45.12";
+var CACHE_NAME = "utzline-viewer-cache-v45.13";
 var ICON_VERSION = CACHE_NAME.replace("utzline-viewer-cache-", "");
 
 var PRECACHE_URLS = [
