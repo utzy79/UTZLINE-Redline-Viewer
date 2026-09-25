@@ -372,7 +372,22 @@
 // doesn't write any of these stages, but renders the badge the same as the
 // editor, so its rank/icon tables need to stay in sync too. Bumped in
 // lockstep with the editor since both builds share this one source.html.
-var CACHE_NAME = "utzline-viewer-cache-v45.13";
+//
+// v46 (2026-09-25): Andrew's "full check" round -- see README v46. Back/Home
+// landing on a blank "new page" (a level file that exists but fails to read
+// mid-sync is now "try again", never "new level"; a blank canvas can never be
+// saved over a real plan); the device Back button steps back through the
+// app instead of closing it; returning to the plan restores the last
+// pan/zoom (and reads nothing); marker status badges paint from a cached
+// snapshot and are re-scanned in the background; a joinery item's very
+// first open imports a croppable, marker-free snapshot of the current view
+// as its base; crop handles reach the whole image; "View shop drawing" only
+// offered when one exists; Save on an item page = lock all + save + back to
+// the plan; PNG backups/Share "current view" fixed (the SVG rasterisation
+// had been failing on "--" inside markup comments); IndexedDB connection
+// reuse, no per-edit IndexedDB copy in project mode, rAF-coalesced drag
+// renders, level-list names cached, smaller backup PNGs.
+var CACHE_NAME = "utzline-viewer-cache-v46";
 var ICON_VERSION = CACHE_NAME.replace("utzline-viewer-cache-", "");
 
 var PRECACHE_URLS = [
