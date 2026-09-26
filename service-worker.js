@@ -387,7 +387,7 @@
 // had been failing on "--" inside markup comments); IndexedDB connection
 // reuse, no per-edit IndexedDB copy in project mode, rAF-coalesced drag
 // renders, level-list names cached, smaller backup PNGs.
-var CACHE_NAME = "utzline-viewer-cache-v46";
+var CACHE_NAME = "utzline-viewer-cache-v47";
 var ICON_VERSION = CACHE_NAME.replace("utzline-viewer-cache-", "");
 
 var PRECACHE_URLS = [

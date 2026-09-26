@@ -1,6 +1,13 @@
 # UTZLINE Viewer — installable app
 
-**Current version: v46** (kept in lockstep with the editor's own version, since both are built from the same `source.html` — bump this line, and add a dated changelog entry, every time a new build ships; v40 through v45.6 shipped without this line being kept in sync — see `next-version-notes.md` in the project, or the editor's own README, for the full per-version detail of that stretch. The only change specific to v45.6 itself: the level-list exclusion gained the new `itp-delivery` folder.)
+**Current version: v47** (kept in lockstep with the editor's own version, since both are built from the same `source.html` — bump this line, and add a dated changelog entry, every time a new build ships; v40 through v45.6 shipped without this line being kept in sync — see `next-version-notes.md` in the project, or the editor's own README, for the full per-version detail of that stretch. The only change specific to v45.6 itself: the level-list exclusion gained the new `itp-delivery` folder.)
+
+**v47 (2026-09-26):** Status icon change — Andrew, verbatim: "change in
+manufacture to this 🔨 and machined to this 🪚." Same shared `source.html`
+as the editor: `joineryStatusIcon` and the plan-marker `joineryDisplayIcon`
+both updated (`in_manufacture`: 🏭 → 🔨; `machined`: ⚙️ → 🪚).
+
+- Cache version bumped: `utzline-viewer-cache-v47`.
 
 **v46 (2026-09-25):** see the editor's own README for the full detail — same shared `source.html`, so this app gets everything that isn't editor-only: the device Back button now steps back through the app (dialog first, then item → plan → level list → project list) instead of closing it; returning to a plan restores the last pan/zoom with no re-read; a level file that exists but can't be read is "try again", never a blank page; marker status badges paint from a cached snapshot and re-scan in the background; "View shop drawing" is offered only when one exists; PNG "current view" sharing works again (the SVG rasterisation had been failing on "--" inside markup comments); one reused IndexedDB connection; drag re-renders coalesced per frame; level names listed from a cache instead of reading every level file. The first-open plan snapshot and Save & exit are editor-only and do not apply here.
 
